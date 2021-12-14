@@ -4,12 +4,14 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <RootNamespace>private.http</RootNamespace>
-    <StartupObject>Sub Main</StartupObject>
+    <StartupObject></StartupObject>
     <UseWindowsForms>true</UseWindowsForms>
     <MyType>WindowsForms</MyType>
-    <AssemblyVersion>2021.12.348.115</AssemblyVersion>
-    <FileVersion>2021.12.348.115</FileVersion>
-    <ApplicationIcon>a5mxf-vvyzo-001.ico</ApplicationIcon>
+    <AssemblyVersion>2021.12.348.122</AssemblyVersion>
+    <FileVersion>2021.12.348.122</FileVersion>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.vb</DefaultItemExcludes>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,12 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="My Project\Application.Designer.vb">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Application.myapp</DependentUpon>
-    </Compile>
-    <Compile Update="My Project\Resources.Designer.vb">
+    <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -41,18 +38,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="My Project\Resources.resx">
-      <CustomToolNamespace>My.Resources</CustomToolNamespace>
-      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="My Project\Application.myapp">
-      <Generator>MyApplicationCodeGenerator</Generator>
-      <LastGenOutput>Application.Designer.vb</LastGenOutput>
-    </None>
   </ItemGroup>
 
 </Project>

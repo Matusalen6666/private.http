@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31829.152
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "private.http.service", "private.http.service\private.http.service.csproj", "{F592D2C8-E032-4C55-98E7-E82BA1F57C96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "private.http", "private.http\private.http.csproj", "{461C9A63-6DE8-0427-271E-60DE95AD100C}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "private.http", "private.http\private.http.vbproj", "{F4381B08-A1B0-4BD6-A546-AAA0F73A24AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{F592D2C8-E032-4C55-98E7-E82BA1F57C96}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F592D2C8-E032-4C55-98E7-E82BA1F57C96}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F592D2C8-E032-4C55-98E7-E82BA1F57C96}.Release|Any CPU.Build.0 = Release|Any CPU
-		{461C9A63-6DE8-0427-271E-60DE95AD100C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{461C9A63-6DE8-0427-271E-60DE95AD100C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{461C9A63-6DE8-0427-271E-60DE95AD100C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{461C9A63-6DE8-0427-271E-60DE95AD100C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4381B08-A1B0-4BD6-A546-AAA0F73A24AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4381B08-A1B0-4BD6-A546-AAA0F73A24AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4381B08-A1B0-4BD6-A546-AAA0F73A24AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4381B08-A1B0-4BD6-A546-AAA0F73A24AC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
