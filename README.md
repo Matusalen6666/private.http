@@ -2,7 +2,6 @@
 Simple private http server with (some) server side scripting.
 
 The server can serve any file type, sending mime header based on file extension.
-Script files are always sent as text/html.
 
 Example script file (*.csscript)
 ```C#
