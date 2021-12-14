@@ -12,35 +12,12 @@ namespace @private.http
 {
     public partial class frmMain
     {
-        private Server __Server;
-
-        private Server _Server
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return __Server;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (__Server != null)
-                {
-                    __Server.Update -= _Server_Update;
-                }
-
-                __Server = value;
-                if (__Server != null)
-                {
-                    __Server.Update += _Server_Update;
-                }
-            }
-        }
+        private Server _Server;        
 
         public frmMain()
         {
             _Server = new Server();
+            _Server.Update += _Server_Update;
             InitializeComponent();
             Logger.LogControl = txtlog;
             Text += $" v.{Application.ProductVersion}";
@@ -182,9 +159,6 @@ namespace @private.http
                     var tn = ParentNode.Nodes.Add(i.Name, i.Name, 2, 2);
                     tn.Tag = i;
                 }
-
-                // Dim tn As TreeNode = ParentNode.Nodes.Add(i.Name)
-                // tn.Tag = i
 
             }
 

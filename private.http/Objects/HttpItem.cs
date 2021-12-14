@@ -6,8 +6,6 @@ using System.Text;
 using System.Xml.Serialization;
 using Microsoft.VisualBasic.CompilerServices;
 
-
-
 namespace @private.http
 {
     [Serializable()]
@@ -28,16 +26,20 @@ namespace @private.http
             {
                 return _VirtualPath;
             }
-
             set
             {
                 _VirtualPath = value.Replace("//", "/");
             }
         }
 
+        public String CacheControl { get; set; } = "no-cache";
+
+
+        public abstract String GetIcon();
+
         public abstract byte[] GetContent(Dictionary<string, string> Params);
 
-        public virtual string Getmime()
+        public virtual string GetMime()
         {
             return MimeTypes.MimeTypeMap.GetMimeType(".html");
         }
@@ -72,7 +74,12 @@ namespace @private.http
                     return (HttpItem.HttpItemApplication)serializer.Deserialize(file);
                 }
 
-                
+
+            }
+
+            public override String GetIcon()
+            {
+                return "Folder.svg";
             }
         }
 
@@ -85,13 +92,18 @@ namespace @private.http
                     return defdoc.Data;
                 return this.FolderContentView();
             }
+
+            public override string GetIcon()
+            {
+                return "Folder.svg";
+            }
         }
 
         public class HttpItemFile : HttpItem
         {
             private Script _script;
 
-            public object Extension
+            public String Extension
             {
                 get
                 {
@@ -108,7 +120,7 @@ namespace @private.http
 
             public override byte[] GetContent(Dictionary<string, string> Params)
             {
-                if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(Extension, Script.Extension, false)))
+                if (Extension == Script.Extension)
                 {
                     return ExecuteScript(Params);
                 }
@@ -118,32 +130,26 @@ namespace @private.http
                 }
             }
 
-            public override string Getmime()
+            public override string GetMime()
             {
-                return MimeTypes.MimeTypeMap.GetMimeType(Conversions.ToString(Extension));
+                return MimeTypes.MimeTypeMap.GetMimeType(Extension);
             }
 
             public byte[] ExecuteScript(Dictionary<string, string> Parameters)
             {
                 try
                 {
-                    string ScriptCode = Encoding.UTF8.GetString(this.Data);
+                    string scriptCode = Encoding.UTF8.GetString(this.Data);
                     var page = new HtmlPage();
                     page.Begin(this.VirtualPath);
 
-                    // SAMPLE
-                    // Using @private.http;
-                    // Public Class Script
-                    // {
-                    // Public void Render(HtmlPage page)
-                    // {
-                    // page.Writer.AppendLine("<hr>");
-                    // }
-                    // }
                     if (_script is null)
                     {
                         Logger.Append($"Compiling script for '{this.VirtualPath}'");
-                        _script = CSScriptLib.CSScript.Evaluator.ReferenceAssembliesFromCode(ScriptCode).ReferenceAssemblyOf<HtmlPage>().LoadCode<Script>(ScriptCode);
+                        _script = CSScriptLib.CSScript.Evaluator.
+                            ReferenceAssembliesFromCode(scriptCode).
+                            ReferenceAssemblyOf<HtmlPage>().
+                            LoadCode<Script>(scriptCode);
                     }
 
                     _script.Application = Program.CurrentApplication;
@@ -152,7 +158,6 @@ namespace @private.http
                     Logger.Append($"Executing script '{this.VirtualPath}'");
                     _script.Render(Parameters);
 
-                    // Parameters.Values.ToArray()
                     page.Close();
                     return Encoding.UTF8.GetBytes(page.Source);
                 }
@@ -161,6 +166,24 @@ namespace @private.http
                     Logger.Append("Error executing script: " + ex.Message);
                     return Array.Empty<byte>();
                 }
+            }
+
+            public override string GetIcon()
+            {
+                if (this.Extension != "")
+                {
+                    String f = $"Files/{Extension.Replace(".", "")}.svg";
+                    String path = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), $"res\\{f.Replace("/","\\")}");
+
+                    if (!System.IO.File.Exists(path)) 
+                        f = "Files/blank.svg";
+                    
+                    return f;
+                }
+                else {
+                    return "Files/blank.svg";
+                }
+                
             }
         }
 
@@ -199,10 +222,13 @@ namespace @private.http
         {
             var page = new HtmlPage();
             page.Begin(VirtualPath);
+
             page.Writer.AppendLine($"<div>Contents of <b>{VirtualPath}</b></div>");
             page.Writer.AppendLine($"<hr>");
             foreach (HttpItem it in Content)
-                page.Writer.AppendLine($"<div><a href={it.VirtualPath}>{it.Name}</a></div>");
+            {                
+                page.Writer.AppendLine($"<div style=\"height: 24px;\"><img style=\"vertical-align: middle; margin-right:5px;\" height=\"16\" src=\"/@res/{it.GetIcon()}\"><a style=\"vertical-align: middle;\" href={it.VirtualPath}>{it.Name}</a></div>");
+            }
             page.Close();
             return Encoding.UTF8.GetBytes(page.Source);
         }
