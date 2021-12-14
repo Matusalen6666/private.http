@@ -7,8 +7,8 @@
     <StartupObject></StartupObject>
     <UseWindowsForms>true</UseWindowsForms>
     <MyType>WindowsForms</MyType>
-    <AssemblyVersion>2021.12.348.122</AssemblyVersion>
-    <FileVersion>2021.12.348.122</FileVersion>
+    <AssemblyVersion>2021.12.348.123</AssemblyVersion>
+    <FileVersion>2021.12.348.123</FileVersion>
     <ApplicationIcon>app.ico</ApplicationIcon>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.vb</DefaultItemExcludes>
     <LangVersion>latest</LangVersion>
