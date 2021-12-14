@@ -2,7 +2,7 @@
 
 Public Class HtmlPage
 
-    Public Writer As New StringBuilder
+    Public Property Writer As New StringBuilder
     Public Property Source As String
 
     Public Sub Begin(Title As String)
