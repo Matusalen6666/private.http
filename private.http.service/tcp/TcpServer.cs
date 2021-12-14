@@ -153,25 +153,21 @@ namespace @private.http.service.tcp
 
         private void ListenForClients()
         {
-            var cancellationTokenSource = new CancellationTokenSource();
-            var token = cancellationTokenSource.Token;
-            _cancellationTokenSource = cancellationTokenSource;
-            _task = Task.Run(() =>
+            _cancellationTokenSource = new CancellationTokenSource();
+            var token = _cancellationTokenSource.Token;
+
+
+            _task = Task.Run(async () =>
             {
-                if (token.IsCancellationRequested) return;
-                while (!_cancellationTokenSource.IsCancellationRequested)
+
+                while (!token.IsCancellationRequested && this.IsListening)
                 {
-                    try
+                    using (var client = await _listener.AcceptTcpClientAsync())
                     {
-                        AcceptClientAsync();
+                        TcpClientAcceptHandler(client);                        
                     }
-                    catch (Exception ex)
-                    {
-                        if (!_cancellationTokenSource.IsCancellationRequested)
-                        {
-                            LogException(ex);
-                        }
-                    }
+
+
                 }
             }, token);
         }
@@ -215,46 +211,23 @@ namespace @private.http.service.tcp
             Log(ex.StackTrace);
         }
 
-        private void AcceptClientAsync()
+        private void TcpClientAcceptHandler(TcpClient Client)
         {
-            var listener = _listener;
-            if (listener == null)
-            {
-                return;
-            }
-
-            var state = new AsyncAcceptState(this, listener);
-            listener.BeginAcceptTcpClient(TcpClientAcceptHandler, state);
-            state.ResetEvent.Wait();
-        }
-
-        private void TcpClientAcceptHandler(IAsyncResult ar)
-        {
-            var state = ar.AsyncState as AsyncAcceptState;
-            if (state == null)
-            {
-                throw new InvalidOperationException(
-                    $"Should have received AsyncAcceptState object"
-                );
-            }
-
             try
             {
-                if (!state.TcpServer.IsListening)
-                {
-                    return;
-                }
 
-                var client = state.Listener.EndAcceptTcpClient(ar);
-                var clientInfo = client.Client.RemoteEndPoint.ToString();
-                Log($"Accepting incoming client request from {clientInfo}");
-                var processor = CreateProcessorFor(client);
-                Log($"Processing request for {clientInfo}");
+                var clientInfo = Client.Client.RemoteEndPoint.ToString();
+                //Log($"Accepting incoming client request from {clientInfo}");
+
+                var processor = CreateProcessorFor(Client);
+                //Log($"Processing request for {clientInfo}");
+
                 processor.ProcessRequest();
+
             }
             finally
             {
-                state.ResetEvent.Set();
+                //state.ResetEvent.Set();
             }
         }
 

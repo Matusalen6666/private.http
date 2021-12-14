@@ -55,7 +55,6 @@ namespace @private.http
                 mime = it.GetMime();
                 processor.WriteOKStatusHeader();
                 processor.WriteMIMETypeHeader(mime);
-                processor.WriteConnectionClosesAfterCommsHeader();
                 processor.WriteContentLengthHeader(buffer.Length);
                 processor.WriteHeader("Cache-Control", it.CacheControl);
                 processor.WriteHeader("served-by", "private.http");

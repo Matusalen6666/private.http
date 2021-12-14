@@ -13,6 +13,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Web;
 using @private.http.service.tcp;
 using static @private.http.service.http.HttpConstants;
 
@@ -81,7 +82,7 @@ namespace @private.http.service.http
         /// </summary>
         public long MaxPostSize { get; set; } = MAX_POST_SIZE;
 
-        public long BytesReceived{ get; set; } =0;
+        public long BytesReceived { get; set; } = 0;
         public long BytesSent { get; set; } = 0;
 
         /// <inheritdoc />
@@ -140,6 +141,9 @@ namespace @private.http.service.http
         /// </summary>
         public void ParseRequest()
         {
+            
+            //if (TcpClient.Available == 0) return;
+            
             this.BytesReceived = TcpClient.Available;
             var request = TcpClient.ReadLine();
             var tokens = request.Split(' ');
@@ -149,7 +153,7 @@ namespace @private.http.service.http
             }
 
             Method = tokens[0].ToUpper();
-            FullUrl = tokens[1];
+            FullUrl = HttpUtility.UrlDecode(tokens[1]);
             var parts = FullUrl.Split('?');
             if (parts.Length == 1)
                 UrlParameters = new Dictionary<string, string>();
@@ -295,7 +299,6 @@ namespace @private.http.service.http
         {
             WriteOKStatusHeader();
             WriteMIMETypeHeader(mimeType);
-            WriteConnectionClosesAfterCommsHeader();
             if (data != null)
             {
                 WriteContentLengthHeader(data.Length);
@@ -331,14 +334,6 @@ namespace @private.http.service.http
             WriteHeader("Content-Length", length);
         }
 
-        /// <summary>
-        /// Writes the header informing the client that the connection
-        /// will not be held open
-        /// </summary>
-        public void WriteConnectionClosesAfterCommsHeader()
-        {
-            WriteHeader("Connection", "close");
-        }
 
         /// <summary>
         /// Writes an arbitrary header to the response stream
@@ -387,9 +382,17 @@ namespace @private.http.service.http
         public void WriteDataToStream(byte[] data)
         {
             if (data == null) return;
-            _outputStream.Flush();
-            _outputStream.BaseStream.Write(data, 0, data.Length);
-            _outputStream.BaseStream.Flush();
+            try
+            {
+                _outputStream.Flush();
+                _outputStream.BaseStream.Write(data, 0, data.Length);
+                if (this.TcpClient.Connected)
+                    _outputStream.BaseStream.Flush();
+            }
+            catch
+            {
+                //CONTINUE
+            }
             this.BytesSent = data.Length;
         }
 
@@ -456,7 +459,6 @@ namespace @private.http.service.http
         )
         {
             WriteStatusHeader(code, message);
-            WriteConnectionClosesAfterCommsHeader();
             if (string.IsNullOrEmpty(body))
             {
                 WriteEmptyLineToStream();
@@ -465,7 +467,6 @@ namespace @private.http.service.http
 
             WriteMIMETypeHeader(mimeType);
             WriteContentLengthHeader(body.Length);
-            WriteConnectionClosesAfterCommsHeader();
             WriteEmptyLineToStream();
             WriteDataToStream(body);
         }

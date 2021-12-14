@@ -27,7 +27,8 @@ namespace @private.http.service.http
                 if (thisChar < 0)
                 {
                     Thread.Sleep(0);
-                    continue;
+                    break;
+                    //continue;
                 }
                 data.Add(Convert.ToChar(thisChar));
             }

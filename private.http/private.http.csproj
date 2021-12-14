@@ -7,8 +7,8 @@
     <StartupObject></StartupObject>
     <UseWindowsForms>true</UseWindowsForms>
     <MyType>WindowsForms</MyType>
-    <AssemblyVersion>2021.12.348.142</AssemblyVersion>
-    <FileVersion>2021.12.348.142</FileVersion>
+    <AssemblyVersion>2021.12.348.173</AssemblyVersion>
+    <FileVersion>2021.12.348.173</FileVersion>
     <ApplicationIcon>app.ico</ApplicationIcon>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.vb</DefaultItemExcludes>
     <LangVersion>latest</LangVersion>
@@ -45,6 +45,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Res\app.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Res\Files\3g2.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

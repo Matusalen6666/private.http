@@ -355,7 +355,7 @@ namespace @private.http.service.http
         /// <inheritdoc />
         public override void HandleGETRequest(HttpProcessor p)
         {
-            Log("Incoming GET request: {0}", p.FullUrl);
+            Log("Incoming GET request: {0} ({1})", p.FullUrl, p.TcpClient.Client.RemoteEndPoint.ToString());
             InvokeHandlersWith(p, null);
         }
 
@@ -410,7 +410,7 @@ namespace @private.http.service.http
         /// <inheritdoc />
         public override void HandlePOSTRequest(HttpProcessor p, Stream inputData)
         {
-            Log("Incoming POST request: {0}", p.FullUrl);
+            Log("Incoming POST request: {0} ({1})", p.FullUrl, p.TcpClient.Client.RemoteEndPoint.ToString());
             InvokeHandlersWith(p, inputData);
         }
 

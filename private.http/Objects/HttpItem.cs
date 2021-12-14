@@ -227,7 +227,7 @@ namespace @private.http
             page.Writer.AppendLine($"<hr>");
             foreach (HttpItem it in Content)
             {                
-                page.Writer.AppendLine($"<div style=\"height: 24px;\"><img style=\"vertical-align: middle; margin-right:5px;\" height=\"16\" src=\"/@res/{it.GetIcon()}\"><a style=\"vertical-align: middle;\" href={it.VirtualPath}>{it.Name}</a></div>");
+                page.Writer.AppendLine($"<div style=\"height: 24px;\"><img style=\"vertical-align: middle; margin-right:5px;\" height=\"16\" src=\"/@res/{it.GetIcon()}\"><a style=\"vertical-align: middle;\" href=\"{it.VirtualPath}\">{it.Name}</a></div>");
             }
             page.Close();
             return Encoding.UTF8.GetBytes(page.Source);

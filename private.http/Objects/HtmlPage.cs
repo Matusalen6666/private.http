@@ -20,7 +20,7 @@ namespace @private.http
 
         private void WriteHeader(string Title)
         {
-            Writer.AppendLine($"<html><head><title>{Title}</title></head><body style=\"font-family:verdana; font-size: 9pt;\">");
+            Writer.AppendLine($"<html><head><title>{Title}</title><link rel=\"icon\" type=\"image/x-icon\" href=\"/@res/app.ico\"></head><body style=\"font-family:verdana; font-size: 9pt;\">");
         }
 
         private void WriteFooter()

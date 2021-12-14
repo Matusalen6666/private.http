@@ -49,12 +49,15 @@ namespace @private.http.service.http
 
         private void DisposeStreamWriter()
         {
-            try            {
-                _outputStreamWriter?.Flush();
+            try
+            {
+                if (this._client.Connected)
+                    _outputStreamWriter?.Flush();
                 _outputStreamWriter?.Dispose();
                 _outputStreamWriter = null;
             }
-            catch {
+            catch
+            {
                 /* intentionally left blank */
             }
         }
@@ -63,7 +66,8 @@ namespace @private.http.service.http
         {
             try
             {
-                _rawStream?.Flush();
+                if (_rawStream.CanRead)
+                    _rawStream?.Flush();
                 _rawStream?.Dispose();
             }
             catch
